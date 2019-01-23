@@ -11,19 +11,17 @@
       <button id="button-pause">Pause</button>
     </div>
     <script>
-      window.onload = () => {
-        const audioVisualizer = new AudioVisualizer('samba.mp3');
+      const audioVisualizer = new AudioVisualizer('samba.mp3');
 
-        const buttonPlay = document.getElementById('button-play');
-        buttonPlay.addEventListener('click', (event) => {
-          audioVisualizer.play();
-        });
+      const buttonPlay = document.getElementById('button-play');
+      buttonPlay.addEventListener('click', (event) => {
+        audioVisualizer.play();
+      });
 
-        const buttonPause = document.getElementById('button-pause');
-        buttonPause.addEventListener('click', (event) => {
-          audioVisualizer.pause();
-        });
-      }
+      const buttonPause = document.getElementById('button-pause');
+      buttonPause.addEventListener('click', (event) => {
+        audioVisualizer.pause();
+      });
     </script>
   </body>
 </html>

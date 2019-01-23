@@ -9,22 +9,25 @@ class AudioVisualizer {
     this.canvas = document.createElement('canvas');
     this.canvas.width = 200 * 4;
     this.canvas.height = 256;
+
     this.canvasContext = this.canvas.getContext("2d");
+    
     document.body.appendChild(this.canvas);
   }
   
-  connectContext() {
-    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    this.analyser = this.audioContext.createAnalyser();
+  init() {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
-    const source = this.audioContext.createMediaElementSource(this.audio);
+    this.analyser = audioContext.createAnalyser();
+
+    const source = audioContext.createMediaElementSource(this.audio);
     source.connect(this.analyser);
     source.connect(this.audioContext.destination);
   }
 
   play() {
-    if (!this.audioContext) {
-      this.connectContext();
+    if (!this.analyser) {
+      this.init();
     }
 
     this.audio.play();

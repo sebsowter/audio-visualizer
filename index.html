@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Audio Visualizer</title>
+    <script src="index.js"></script>
+  </head>
+  <body>
+    <div>
+      <button id="button-play">Play</button>
+      <button id="button-pause">Pause</button>
+    </div>
+    <script>
+      window.onload = () => {
+        const audioVisualizer = new AudioVisualizer('samba.mp3');
+
+        const buttonPlay = document.getElementById('button-play');
+        buttonPlay.addEventListener('click', (event) => {
+          audioVisualizer.play();
+        });
+
+        const buttonPause = document.getElementById('button-pause');
+        buttonPause.addEventListener('click', (event) => {
+          audioVisualizer.pause();
+        });
+      }
+    </script>
+  </body>
+</html>

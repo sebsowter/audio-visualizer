@@ -1,12 +1,10 @@
 class AudioVisualizer {
 
   constructor(url) {
-    this.url = url;
-    this.firstPlay = true;
     this.animationFrame = null;
 
     this.audio = document.createElement('audio');
-    this.audio.src = this.url;
+    this.audio.src = url;
 
     this.canvas = document.createElement('canvas');
     this.canvas.width = 200 * 4;
@@ -15,21 +13,18 @@ class AudioVisualizer {
     document.body.appendChild(this.canvas);
   }
   
-  connect() {
+  connectContext() {
     this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    this.source = this.audioContext.createMediaElementSource(this.audio);
     this.analyser = this.audioContext.createAnalyser();
-    
-    this.source.connect(this.analyser);
-    this.source.connect(this.audioContext.destination);
-    
-    this.dataArray = new Uint8Array(200);
-    this.firstPlay = false;
+
+    const source = this.audioContext.createMediaElementSource(this.audio);
+    source.connect(this.analyser);
+    source.connect(this.audioContext.destination);
   }
 
   play() {
-    if (this.firstPlay) {
-      this.connect();
+    if (!this.audioContext) {
+      this.connectContext();
     }
 
     this.audio.play();
@@ -50,13 +45,15 @@ class AudioVisualizer {
   }
 
   onFrame() {
-    this.analyser.getByteFrequencyData(this.dataArray);
+    const dataArray = new Uint8Array(200);
+    
+    this.analyser.getByteFrequencyData(dataArray);
     
     this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    for (let i = 0; i < this.dataArray.length; i++) {
+    for (let i = 0; i < dataArray.length; i++) {
       this.canvasContext.fillStyle = "#999999";
-      this.canvasContext.fillRect(i * 4, 256 - this.dataArray[i], 3, this.dataArray[i]);
+      this.canvasContext.fillRect(i * 4, 256 - dataArray[i], 3, dataArray[i]);
     }
   }
 } 

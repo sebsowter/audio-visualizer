@@ -3,8 +3,7 @@ class AudioVisualizer {
   constructor(url) {
     this.animationFrame = null;
 
-    this.audio = document.createElement('audio');
-    this.audio.src = url;
+    this.audio = new Audio(url);
 
     this.canvas = document.createElement('canvas');
     this.canvas.width = 200 * 4;
@@ -22,7 +21,7 @@ class AudioVisualizer {
 
     const source = audioContext.createMediaElementSource(this.audio);
     source.connect(this.analyser);
-    source.connect(this.audioContext.destination);
+    source.connect(audioContext.destination);
   }
 
   play() {
@@ -49,13 +48,17 @@ class AudioVisualizer {
 
   onFrame() {
     const dataArray = new Uint8Array(200);
+    const gradient = this.canvasContext.createLinearGradient(0, 0, 0, 256);
+    gradient.addColorStop(0, "green");
+    gradient.addColorStop(1, "yellow");
     
     this.analyser.getByteFrequencyData(dataArray);
     
     this.canvasContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
     for (let i = 0; i < dataArray.length; i++) {
-      this.canvasContext.fillStyle = "#999999";
+      
+      this.canvasContext.fillStyle = gradient;
       this.canvasContext.fillRect(i * 4, 256 - dataArray[i], 3, dataArray[i]);
     }
   }
